@@ -1,3 +1,6 @@
+import numpy as np
+from State import State
+
 class System:
     dT = 0.01
     dt = 0.00001
