@@ -7,7 +7,17 @@ class Ball:
         self.radius = radius
         self.isPocketed = isPocketed
 
-
+    #Uses euler-cromer method to update the position of the ball
     def update(self, x, y):
-        self.x = x
-        self.y = y
+        for i in range(self.pos.shape[0]):
+            
+  
+            self.pos[i] += self.vel[i]
+            if self.pos[i] < 0 or self.pos[i] > x:
+                self.vel[i] *= -1
+
+
+    def overlaps(self, other):
+
+        #return np.linalg.norm(self.pos - other.pos) < self.radius + other.radius
+        return
