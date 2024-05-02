@@ -10,6 +10,7 @@ class System:
         # the list of all the states the system has been in
         self.history = np.ndarray(dtype=State)
 
+
     def run(self, steps: int) -> None:
         for T in range(steps):
             temp_state = self.history[-1].get_next(self.dT)
@@ -21,6 +22,8 @@ class System:
                 # collision detected
                 for t in range(self.dT / self.dt):
                     temp_state = self.history[-1].get_next(self.dt)
+
                     if temp_state.has_overlap():
-                        self.history[-1].deal_with_overlap()
-            
+                        temp_state.deal_with_overlap()
+
+                self.history.append(temp_state)
