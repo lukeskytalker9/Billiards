@@ -6,18 +6,21 @@ class State:
         self.balls = np.array(balls)
 
     def get_next(self, timestep) -> State:
+        """Return the next state after this one (i.e., the state after one timestep)."""
         pass
 
-    def has_overlap(self):
+    def has_overlap(self) -> bool:
+        """Are any balls overlapping each other?"""
+        # Iterate over each ball and every other ball.
         for ball in self.balls:
             for other in self.balls:
-                # if they're not the same ball...
+                # If they're not the same ball...
                 if id(ball) != id(other):
                     # ...and if they overlap...
                     if ball.overlaps(other):
-                        # return true
+                        # ...return true.
                         return True
-        # ... if there's no overlap, return false.
+        # If there's no overlap, return false.
         return False
     
     def calculate_collision():
