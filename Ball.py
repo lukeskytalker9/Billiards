@@ -10,6 +10,8 @@ class Ball:
 
     __frictionContant = 0.05
 
+    __slots__ = ['pos', 'vel', 'radius', 'isPocketed']
+
     def __init__(self, pos_x, pos_y, vel_x , vel_y , radius, isPocketed=False):
         self.pos = np.array([pos_x, pos_y] , dtype=float)
         self.vel = np.array([vel_x, vel_y] , dtype=float)
