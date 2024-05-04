@@ -35,6 +35,9 @@ class Ball:
 
         return distance < ( self.radius + other.radius )
     
+    def placeInPocket(self):
+        self.isPocketed = True
+    
     
     def __str__(self) -> str:
         return f"Ball at {self.pos} with velocity {self.vel} and radius {self.radius} is pocketed: {self.isPocketed}"
