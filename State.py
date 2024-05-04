@@ -19,7 +19,15 @@ class State:
         """Are any balls overlapping each other?"""
         # Iterate over each ball and every other ball.
         for ball in self.balls:
+
+            if ball.isPocketed:
+                continue
+
             for other in self.balls:
+
+                if other.isPocketed:
+                    continue
+
                 # If they're not the same ball...
                 if id(ball) != id(other):
                     # ...and if they overlap...
