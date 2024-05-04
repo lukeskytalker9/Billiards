@@ -11,9 +11,12 @@ class System:
         self.history[0] = initial_state
         self.walls = walls
 
+    def get_current_state(self):
+        return self.history[-1]
+    
     def run(self, steps: int) -> None:
         for T in range(steps):
-            temp_state = self.history[-1].get_next(self.dT)
+            temp_state = self.get_current_state().get_next(self.dT)
 
             if not temp_state.has_overlap():
                 # no collision, we're good
@@ -21,7 +24,7 @@ class System:
             else:
                 # collision detected, so transition to using little timesteps until the collision happens
                 for t in range(self.dT / self.dt):
-                    temp_state = self.history[-1].get_next(self.dt)
+                    temp_state = self.get_current_state().get_next(self.dt)
 
                     if temp_state.has_overlap():
                         temp_state.deal_with_overlap()

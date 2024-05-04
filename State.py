@@ -2,7 +2,7 @@ import numpy as np
 from __future__ import annotations
 
 class State:
-    def __init__(self, balls=None):
+    def __init__(self, balls=None) -> None:
         self.balls = np.array(balls)
 
     def get_next(self, timestep) -> State:
