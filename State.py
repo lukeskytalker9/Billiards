@@ -7,7 +7,13 @@ class State:
 
     def get_next(self, timestep) -> State:
         """Return the next state after this one (i.e., the state after one timestep)."""
-        pass
+        next = self.balls.copy()
+        
+        for ball in next.balls():
+            if not ball.isPocketed():
+                ball.update(timestep)
+                
+        return next
 
     def has_overlap(self) -> bool:
         """Are any balls overlapping each other?"""
