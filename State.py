@@ -1,6 +1,8 @@
 from __future__ import annotations
 import numpy as np
 from Ball import Ball
+import matplotlib.pyplot as plt
+import matplotlib as mpl
 
 class State:
     def __init__(self, balls=None) -> None:
@@ -53,9 +55,9 @@ class State:
             pair[0].pos = pair[0].pos - factor
             pair[1].pos = pair[1].pos + factor
 
-            n = pair[0].pos - pair[1].pos
-            n = n / np.linalg.norm(n)
-            self.vel = self.vel - 2 * (np.dot(self.vel, n)) * n
+            # n = pair[0].pos - pair[1].pos
+            # n = n / np.linalg.norm(n)
+            # self.vel = self.vel - 2 * (np.dot(self.vel, n)) * n
 
 
             # pair[0].bounce_velocity(pair[1])
@@ -68,9 +70,22 @@ if __name__ == "__main__":
     balls = [Ball(0, 0, 0, 0, 1), Ball(0, 0.5, 0, -1, 1)]
     state = State(balls)
     print("Balls before: ", *balls)
-    state.perform_collision(state.has_overlap())
+    # state.perform_collision(state.has_overlap())
     print("Balls after: ", *balls)
+    fig, ax = plt.subplots()
+    ax.set_xlim([-1, 1])
 
-    
+    ax.set_ylim([-1, 1])
+    x = [ball.pos[0] for ball in balls]
+    y = [ball.pos[1] for ball in balls]
+    vx = [ball.vel[0] for ball in balls]
+    vy = [ball.vel[1] for ball in balls]
 
-    
+
+    circles = [plt.Circle((xi,yi), radius=0.5, linewidth=0) for xi,yi in zip(x,y)]
+    c = mpl.collections.PatchCollection(circles)
+    ax.add_collection(c)
+    plt.gca().set_aspect('equal')
+    ax.quiver(x, y, vx, vy)
+
+    plt.show()    
