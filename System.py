@@ -20,9 +20,10 @@ class System:
 
         for _ in range(steps):
             temp_state = self.get_current_state().get_next(self.dT)
+            overlaps = temp_state.has_overlap()
 
-            if not temp_state.has_overlap():
-                # Next frame has no collision, we're good.
+            if not overlaps:
+                # Next frame has no collisions, we're good.
                 self.history.append(temp_state)
                 continue
             else:
@@ -30,7 +31,10 @@ class System:
                 for t in range(self.dT / self.dt):
                     temp_state = self.get_current_state().get_next(self.dt)
 
-                    if temp_state.has_overlap():
-                        temp_state.perform_collision()
+                    overlaps = temp_state.has_overlap()
+
+                    while overlaps:
+                        temp_state.perform_collision(overlaps)
+                        overlaps = temp_state.has_overlap()
 
             self.history.append(temp_state)
