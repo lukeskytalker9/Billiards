@@ -11,22 +11,26 @@ class System:
         self.history[0] = initial_state
         self.walls = walls
 
+        assert(self.dT % self.dt == 0, "Big timestep should be divisible by little timestep.")
+
     def get_current_state(self):
         return self.history[-1]
-    
+
     def run(self, steps: int) -> None:
-        for T in range(steps):
+
+        for _ in range(steps):
             temp_state = self.get_current_state().get_next(self.dT)
 
             if not temp_state.has_overlap():
-                # no collision, we're good
+                # Next frame has no collision, we're good.
                 self.history.append(temp_state)
+                continue
             else:
-                # collision detected, so transition to using little timesteps until the collision happens
+                # Collision detected next frame, so transition to using little timesteps until the collision happens.
                 for t in range(self.dT / self.dt):
                     temp_state = self.get_current_state().get_next(self.dt)
 
                     if temp_state.has_overlap():
-                        temp_state.deal_with_overlap()
+                        temp_state.perform_collision()
 
-                self.history.append(temp_state)
+            self.history.append(temp_state)

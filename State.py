@@ -8,11 +8,11 @@ class State:
     def get_next(self, timestep) -> State:
         """Return the next state after this one (i.e., the state after one timestep)."""
         next = self.balls.copy()
-        
+
         for ball in next.balls():
             if not ball.isPocketed():
                 ball.update(timestep)
-                
+
         return next
 
     def has_overlap(self) -> bool:
@@ -36,6 +36,6 @@ class State:
                         return True
         # If there's no overlap, return false.
         return False
-    
-    def calculate_collision():
+
+    def perform_collision():
         pass
