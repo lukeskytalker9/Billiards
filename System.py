@@ -7,9 +7,11 @@ class System:
     dt = 0.00001    # Size of little timestep.
     mu = 0.05       # Bascially the coefficient of friction.
 
-    def __init__(self, initial_state: State, walls) -> None:
+    def __init__(self, initial_state: State, walls, x_lims=[-1, 1], y_lims=[-1, 1]) -> None:
         self.history = [initial_state.copy()] # The list of all the states the system has been in.
         self.walls = walls
+        self.x_lims = x_lims
+        self.y_lims = y_lims
 
         # We don't wany any missing states.
         assert(self.dT % self.dt == 0, "Big timestep should be divisible by little timestep.")
@@ -41,7 +43,7 @@ class System:
                     while len(overlaps) > 0:
                         # ... then perform collision procedure until there are no more overlaps.
                         # This loop is needed b/c collision procedure may produce new overlaps since it moves the balls apart.
-                        # ? Will this actually update the balls in-place? I don't think it will...
+                        # ? Will this actually update the balls in-place?
                         for pair in overlaps:
                             pair[0].collision(pair[1])
                         overlaps = temp_state.has_overlap()
