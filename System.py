@@ -41,10 +41,14 @@ class System:
                     while len(overlaps) > 0:
                         # ... then perform collision procedure until there are no more overlaps.
                         # This loop is needed b/c collision procedure may produce new overlaps since it moves the balls apart.
-                        temp_state.perform_collision(overlaps)
+                        # ? Will this actually update the balls in-place? I don't think it will...
+                        for pair in overlaps:
+                            pair[0].collision(pair[1])
                         overlaps = temp_state.has_overlap()
 
             self.history.append(temp_state)
+
+    def __str__():
 
 
 if __name__ == "__main__":
