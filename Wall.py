@@ -105,6 +105,7 @@ if __name__ == "__main__":
     ball = Ball(5,0.5,1,-1,1)
     wall = Wall(0,0,10,0)
     print(wall.isOverlapping(ball))
+    print("\n\n")
 
     print("Testing the collision method")
     ball = Ball(5 , 4.5 , - 1 , 2 , 1)
@@ -112,6 +113,4 @@ if __name__ == "__main__":
     print(ball)
     wall.collision(ball)
     print(ball)
-
-
-    pass
+    print("\n\n")
