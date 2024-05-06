@@ -16,16 +16,20 @@ class State:
 
     def get_next(self, timestep) -> State:
         """Returns the next state after this one (i.e., the state after one timestep)."""
+
+        # Copy the current state.
         next = State(balls=self.balls.copy())
 
-        # Update the balls (unless they're pocketed).
+        # Update the balls in next state (unless they're pocketed).
         for ball in next.balls:
             if not ball.isPocketed:
                 ball.update(timestep)
+
         return next
 
     def has_overlap(self) -> list:
         """Returns a list of pairs of balls which overlap each other, or empty list if none do."""
+
         overlaps = []
         # Compare every ball to every ball.
         for ball in self.balls:
@@ -39,10 +43,12 @@ class State:
                             # ...then add that pair to the list of overlaps, but only if it's not already in there.
                             if not any([ball in o and other in o for o in overlaps]):
                                 overlaps.append([ball, other])
+
         return overlaps
 
     def plot(self, xlims=[-1, 1], ylims=[-1, 1], ax_p=None) -> None:
         """Draws the current state to a matplotlib plot."""
+
         if ax_p is None:
             fig, ax = plt.subplots()
         else:
@@ -57,7 +63,7 @@ class State:
         ax.add_collection(mpl.collections.PatchCollection(circles))
         plt.gca().set_aspect('equal')
         ax.quiver(px, py, vx, vy)
-        # plt.show()
+        plt.show()
 
 
 if __name__ == "__main__":
