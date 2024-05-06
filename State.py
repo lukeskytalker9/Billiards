@@ -1,5 +1,5 @@
-import numpy as np
 from __future__ import annotations
+import numpy as np
 
 class State:
     def __init__(self, balls=None) -> None:
