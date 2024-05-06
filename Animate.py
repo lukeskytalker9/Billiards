@@ -22,10 +22,9 @@ class Animate:
         ax.set_xlim([-1, 1])
         ax.set_ylim([-1, 1])
 
-        px = [ball.pos[0] for ball in self.balls]
-        py = [ball.pos[1] for ball in self.balls]
-        vx = [ball.vel[0] for ball in self.balls]
-        vy = [ball.vel[1] for ball in self.balls]
+        state = system.get_current_state()
+        px, py = 1.0 * np.array([[ball.pos[0] for ball in state.balls], [ball.pos[1] for ball in state.balls]])
+        vx, vy = 0.1 * np.array([[ball.vel[0] for ball in state.balls], [ball.vel[1] for ball in state.balls]])
 
         def init():
             return vis,
@@ -44,7 +43,7 @@ class Animate:
         plt.show()
 
 
-    def calc_then_show(self):
+    def calc_then_show(self, scale_fac=6000):
         """EXPERIMENTAL"""
         self.system.run(self.num_frames)
 
@@ -52,14 +51,17 @@ class Animate:
         fig, ax = plt.subplots()
 
         plt.gca().set_aspect('equal')
+
         ax.set_xlim([-1, 1])
         ax.set_ylim([-1, 1])
+
         px, py = ([ball.pos[0] for ball in self.system.history[0].balls], [ball.pos[1] for ball in self.system.history[0].balls])
 
         collection = lambda: mpl.collections.PatchCollection([plt.Circle((ball.pos[0], ball.pos[1]), radius=ball.radius, linewidth=10) for ball in self.system.history[0].balls])
         # ax.add_collection(collection())
 
-        (ln,) = ax.plot(np.zeros(len(px)), np.zeros(len(py)), animated=True, marker='.', markersize=72)
+        # (ln,) = ax.plot(np.zeros(len(px)), np.zeros(len(py)), animated=True, marker='.', markersize=[ball.radius for ball in self.system.get_current_state().balls])
+        ln = ax.scatter(np.zeros(len(px)), np.zeros(len(py)), animated=True, s=[ball.radius * scale_fac for ball in self.system.get_current_state().balls])
 
         plt.show(block=False)
         plt.pause(0.1)
@@ -79,7 +81,7 @@ class Animate:
                 ax.arrow(px[i], py[i], vx[i], vy[i], animated=True, edgecolor='black')
 
             ax.draw_artist(ln)
-            ln.set_data(px, py)
+            ln.set_offsets([ball.pos for ball in state.balls])
 
             fig.canvas.blit(fig.bbox)
             fig.canvas.flush_events()
@@ -93,6 +95,6 @@ if __name__ == "__main__":
     print("Test file for Animate.py")
     balls = np.array([Ball(0, 0, 0, 0, 0.1), Ball(0, 0.5, 0, -1, 0.1)])
     system = System(initial_state=State(balls), walls=None)
-    anim = Animate(system=system, num_frames=100)
-    anim.calc_then_show_EXP()
+    anim = Animate(system=system, num_frames=100, fps=10)
+    anim.calc_then_show()
     print("Test finished.")
