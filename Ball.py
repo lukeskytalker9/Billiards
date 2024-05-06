@@ -23,9 +23,9 @@ class Ball:
 
         if self.isPocketed:
             return
-        
-        self.vel += -1 * self.__frictionContant * tempstep * self.vel 
-        self.pos += self.vel * tempstep
+
+        self.vel = self.vel + -self.__frictionContant * tempstep * self.vel
+        self.pos = self.pos + self.vel * tempstep
 
 
 
@@ -34,7 +34,7 @@ class Ball:
         distance = np.linalg.norm(self.pos - other.pos)
 
         return distance < ( self.radius + other.radius )
-    
+
     def placeInPocket(self):
         self.isPocketed = True
 
@@ -64,7 +64,7 @@ class Ball:
 
         Vi1t = np.dot(self.vel, tangentPosistionVector)
         Vi1n = np.dot(self.vel, normPositionVector)
-        
+
         Vi2t = np.dot(other.vel, tangentPosistionVector)
         Vi2n = np.dot(other.vel, normPositionVector)
 
@@ -81,13 +81,13 @@ class Ball:
 
 
 
-    
-    
+
+
     def __str__(self) -> str:
         return f"Ball at {self.pos} with velocity {self.vel} and radius {self.radius} is pocketed: {self.isPocketed}"
 
 
-    
+
 
 if __name__ == "__main__":
     print("You are running the test file for Ball.py")
@@ -98,6 +98,7 @@ if __name__ == "__main__":
     print(x.overlaps(y))
     print(x)
     x.update(1)
+    print("Step performed")
     print(str(x))
     print("\n\n")
 

@@ -3,14 +3,20 @@ import numpy as np
 from Ball import Ball
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+from copy import deepcopy
 
 class State:
     def __init__(self, balls=None) -> None:
         self.balls = np.array(balls)
 
+
+    def copy(self) -> State:
+        """Returns a deep copy of self."""
+        return deepcopy(self)
+
     def get_next(self, timestep) -> State:
         """Returns the next state after this one (i.e., the state after one timestep)."""
-        next = State(balls=self.balls)
+        next = State(balls=self.balls.copy())
 
         # Update the balls (unless they're pocketed).
         for ball in next.balls:
