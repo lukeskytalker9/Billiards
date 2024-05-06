@@ -47,21 +47,29 @@ class Animate:
         """EXPERIMENTAL"""
         self.system.run(self.num_frames)
 
-        print(self.system.repr_history())
+        # print(self.system.repr_history())
         fig, ax = plt.subplots()
 
-        plt.gca().set_aspect('equal')
+        vmax, vmin = (1, -1)
 
-        ax.set_xlim([-1, 1])
-        ax.set_ylim([-1, 1])
+        # This converts between pixels and plot units.
+        scatscale = ((ax.get_window_extent().width / (vmax - vmin + 1) * 72 / fig.dpi) ** 2)
+
+        plt.gca().set_aspect('equal')
+        ax.axis("off")
+
+        ax.set_xlim([vmin, vmax])
+        ax.set_ylim([vmin, vmax])
 
         px, py = ([ball.pos[0] for ball in self.system.history[0].balls], [ball.pos[1] for ball in self.system.history[0].balls])
+        vx, vy = ([ball.vel[0] for ball in self.system.history[0].balls], [ball.vel[1] for ball in self.system.history[0].balls])
 
-        collection = lambda: mpl.collections.PatchCollection([plt.Circle((ball.pos[0], ball.pos[1]), radius=ball.radius, linewidth=10) for ball in self.system.history[0].balls])
-        # ax.add_collection(collection())
+        arrows = [ax.arrow(px[i], py[i], vx[i], vy[i], animated=True, fc='black', ec='black') for i in range(len(self.system.history[0].balls))]
+
+        # collection = lambda: mpl.collections.PatchCollection([plt.Circle((ball.pos[0], ball.pos[1]), radius=ball.radius, linewidth=10) for ball in self.system.history[0].balls])
 
         # (ln,) = ax.plot(np.zeros(len(px)), np.zeros(len(py)), animated=True, marker='.', markersize=[ball.radius for ball in self.system.get_current_state().balls])
-        ln = ax.scatter(np.zeros(len(px)), np.zeros(len(py)), animated=True, s=[ball.radius * scale_fac for ball in self.system.get_current_state().balls])
+        ln = ax.scatter(np.zeros(len(px)), np.zeros(len(py)), animated=True, s=[scatscale * ball.radius / 2 for ball in self.system.get_current_state().balls])
 
         plt.show(block=False)
         plt.pause(0.1)
@@ -69,19 +77,18 @@ class Animate:
         ax.draw_artist(ln)
         fig.canvas.blit(fig.bbox)
 
-        for frame, state in enumerate(self.system.history):
+        for state in self.system.history:
 
             px, py = 1.0 * np.array([[ball.pos[0] for ball in state.balls], [ball.pos[1] for ball in state.balls]])
-            vx, vy = 0.1 * np.array([[ball.vel[0] for ball in state.balls], [ball.vel[1] for ball in state.balls]])
+            vx, vy = 10 * np.array([[ball.vel[0] for ball in state.balls], [ball.vel[1] for ball in state.balls]])
 
             fig.canvas.restore_region(bg)
             # collection.set_paths([plt.Circle((ball.pos[0], ball.pos[1]), radius=ball.radius, linewidth=10) for ball in state.balls])
-
-            for i in range(len(state.balls)):
-                ax.arrow(px[i], py[i], vx[i], vy[i], animated=True, edgecolor='black')
-
-            ax.draw_artist(ln)
             ln.set_offsets([ball.pos for ball in state.balls])
+            ax.draw_artist(ln)
+
+            for i, arrow in enumerate(arrows):
+                arrow.set_data(x=px[i], y=py[i], dx=vx[i], dy=vy[i])
 
             fig.canvas.blit(fig.bbox)
             fig.canvas.flush_events()
@@ -93,8 +100,9 @@ class Animate:
 
 if __name__ == "__main__":
     print("Test file for Animate.py")
-    balls = np.array([Ball(0, 0, 0, 0, 0.1), Ball(0, 0.5, 0, -1, 0.1)])
-    system = System(initial_state=State(balls), walls=None)
-    anim = Animate(system=system, num_frames=100, fps=10)
+    balls = np.array([Ball(0, 0, 0, 0, 0.1), Ball(0, 0.5, 0, -1, 0.1), Ball(0, 0.25, 0, -0.9, 0.1)])
+
+    system = System(initial_state=State(np.array(balls)), walls=None)
+    anim = Animate(system=system, num_frames=120, fps=60)
     anim.calc_then_show()
     print("Test finished.")
