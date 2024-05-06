@@ -1,7 +1,6 @@
 from System import System
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-
 class Animate:
 
     def __init__(self, system: System, num_frames, fps=30) -> None:
@@ -10,6 +9,8 @@ class Animate:
         self.fps = fps
 
     def show_live(self) -> None:
+        """This calculates each frame and then shows that frame, then calculates the next one and shows it, etc."""
+
         fig, ax = plt.subplots()
         vis, _ = ax.plot([], [])
 
@@ -27,6 +28,8 @@ class Animate:
 
 
     def calc_then_show(self):
+        """This calculates all the frames and then plays them back after."""
+
         fig, ax = plt.subplots()
         vis, _ = ax.plot([], [])
 
