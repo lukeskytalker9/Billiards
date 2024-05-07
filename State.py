@@ -55,10 +55,8 @@ class State:
             ax = ax_p
         ax.set_xlim(xlims)
         ax.set_ylim(ylims)
-        px = [ball.pos[0] for ball in self.balls]
-        py = [ball.pos[1] for ball in self.balls]
-        vx = [ball.vel[0] for ball in self.balls]
-        vy = [ball.vel[1] for ball in self.balls]
+        px, py = ([ball.pos[0] for ball in self.balls], [ball.pos[1] for ball in self.balls])
+        vx, vy = ([ball.vel[0] for ball in self.balls], [ball.vel[1] for ball in self.balls])
         circles = [plt.Circle((ball.pos[0], ball.pos[1]), radius=ball.radius, linewidth=10) for ball in self.balls]
         ax.add_collection(mpl.collections.PatchCollection(circles))
         plt.gca().set_aspect('equal')
