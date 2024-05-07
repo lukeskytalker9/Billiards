@@ -1,10 +1,8 @@
 from System import System
 from State import State
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation
 from Ball import Ball
 import numpy as np
-import matplotlib as mpl
 
 class Animate:
 
@@ -14,11 +12,12 @@ class Animate:
         self.fps = fps
 
     def calc_then_show(self) -> None:
-        """EXPERIMENTAL"""
+        """Calculate the states and then display them as a matplotlib animation."""
 
         # Run the system for however many timesteps were given. Also save initial state for later.
         self.system.run(self.num_frames)
         initial_state = self.system.history[0]
+        num_balls = len(initial_state.balls)
 
         # Create plots.
         fig, ax = plt.subplots()
@@ -34,30 +33,22 @@ class Animate:
         ax.set_xlim(system.x_lims)
         ax.set_ylim(system.y_lims)
 
-        # Calculate position and velocity lists with x and y components separated (need for plotting).
-        px, py = ([ball.pos[0] for ball in initial_state.balls], [ball.pos[1] for ball in initial_state.balls])
-        vx, vy = ([ball.vel[0] for ball in initial_state.balls], [ball.vel[1] for ball in initial_state.balls])
+        # Create arrows to represent balls' velocities.
+        arrow_scale = 1 / 10
+        arrows = [ax.arrow(0, 0, 0, 0, animated=True, fc='black', head_width=0.02) for i in range(num_balls)]
 
-        # Draw arrows for balls' velocities.
-        arrow_scale = 10.0
-        arrows = [ax.arrow(px[i], py[i], vx[i], vy[i], animated=True, fc='black', ec='black') for i in range(len(initial_state.balls))]
+        # Make the plot for the balls (which is secretly just a scatter plot, don't tell anybody :3).
+        ln = ax.scatter(np.zeros(num_balls), np.zeros(num_balls), animated=True, s=[scatscale * ball.radius / 2 for ball in initial_state.balls])
 
-        # Make the plot for the balls (which is secretly just a scatter plot, don't tell anybody).
-        ln = ax.scatter(np.zeros(len(px)), np.zeros(len(py)), animated=True, s=[scatscale * ball.radius / 2 for ball in initial_state.balls])
-
-        # Some wierd matplotlib stuff that we need for this to work.
+        # Some matplotlib stuff that we need for this to work.
         plt.show(block=False)
         plt.pause(0.1)
         bg = fig.canvas.copy_from_bbox(fig.bbox)
         ax.draw_artist(ln)
         fig.canvas.blit(fig.bbox)
 
-        # For every state in the system's history...
+        # Iterate over every state in the system's history.
         for frame, state in enumerate(self.system.history):
-
-            # Calculate position and velocity arrays with x and y components separated (need for plotting).
-            px, py = np.array([[ball.pos[0] for ball in state.balls], [ball.pos[1] for ball in state.balls]])
-            vx, vy = np.array([[ball.vel[0] for ball in state.balls], [ball.vel[1] for ball in state.balls]])
 
             # Redraw background.
             fig.canvas.restore_region(bg)
@@ -68,22 +59,25 @@ class Animate:
             # Redraw balls.
             ax.draw_artist(ln)
 
-            # Update the arrows to reflect the balls' new velocities.
+            # Update the arrows to reflect the balls' new positions and velocities.
             for i, arrow in enumerate(arrows):
-                arrow.set_data(x=px[i], y=py[i], dx=vx[i], dy=vy[i])
+                pos = state.balls[i].pos
+                vel = state.balls[i].vel * arrow_scale
+                arrow.set_data(x=pos[0], y=pos[1], dx=vel[0] , dy=vel[1])
 
             # Redraw arrows.
             for arrow in arrows:
                 ax.draw_artist(arrow)
 
-            # Some more wierd matplotlib stuff that we need for this to work.
+            # Some more matplotlib stuff that we need for this to work.
             fig.canvas.blit(fig.bbox)
             fig.canvas.flush_events()
 
+            # Print frame number (with carriage return at the end).
             print(f'frame {frame}', end='\r')
 
             # Pause so we can control the framerate.
-            plt.pause(1/self.fps)
+            plt.pause(1 / self.fps)
 
 
 if __name__ == "__main__":
