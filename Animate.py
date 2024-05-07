@@ -27,7 +27,7 @@ class Animate:
 
         # Set plot aspect ratio to 1:1 and turn off axis ticks.
         plt.gca().set_aspect('equal')
-        ax.axis("off")
+        # ax.axis("off")
 
         # Set the x, y ranges of the plot.
         ax.set_xlim(system.x_lims)
@@ -82,7 +82,12 @@ class Animate:
 
 if __name__ == "__main__":
     print("Test file for Animate.py")
-    balls = np.array([Ball(0, 0, 0, 0, 0.1), Ball(0, 0.5, 0, -1, 0.1), Ball(0, 0.25, 0, -0.25, 0.1)])
+    balls = np.array([
+        Ball(-1, 1, 0.5, -0.5, 0.1),
+        Ball(1, 1, -0.5, -0.5, 0.1),
+        Ball(0, 0.5, 0, -0.5, 0.1), 
+        Ball(0, 0.25, 0, -0.25, 0.1)
+    ])
     system = System(initial_state=State(np.array(balls)), walls=None)
-    Animate(system=system, num_frames=120, fps=60).calc_then_show()
+    Animate(system=system, num_frames=300, fps=60).calc_then_show()
     print("Test finished.")
