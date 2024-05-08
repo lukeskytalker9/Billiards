@@ -17,6 +17,7 @@ class System:
         if self.dT % self.dt == 0:
             raise ValueError("Big timestep should be divisible by little timestep.")
 
+
     def get_current_state(self):
         return self.history[-1]
 

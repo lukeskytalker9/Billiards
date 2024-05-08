@@ -77,6 +77,7 @@ class Animate:
 
             # Print frame number (with carriage return at the end).
             print(f'Showing frame {frame}', end='\r')
+            print(f'Showing frame {frame}', end='\r')
 
             # Pause so we can control the framerate.
             plt.pause(1 / self.fps)
