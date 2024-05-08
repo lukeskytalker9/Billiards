@@ -90,5 +90,5 @@ if __name__ == "__main__":
         Ball(0, 0.25, 0, -0.25, 0.1)
     ])
     system = System(initial_state=State(np.array(balls)), walls=None)
-    Animate(system=system, num_frames=300, fps=60).calc_then_show(False)
+    Animate(system=system, num_frames=300, fps=60).calc_then_show(True)
     print("Test finished.")
