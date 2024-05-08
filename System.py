@@ -23,6 +23,7 @@ class System:
         """Calculates the given number of subsequent states, which are added to self.history."""
 
         for _ in range(steps):
+            print(f"Step: {len(self.history)}")
             # Get next state, and see if there are any balls overlaping (i.e., ball-ball collisions).
             temp_state = self.get_current_state().get_next(self.dT).copy()
 
@@ -40,7 +41,10 @@ class System:
 
                     # If there are any overlaps now...
                     overlaps = temp_state.has_overlap()
+                    
                     while len(overlaps) > 0:
+                        print(*overlaps)
+
                         # ... then perform collision procedure until there are no more overlaps.
                         # This loop is needed b/c collision procedure may produce new overlaps since it moves the balls apart.
                         # ? Will this actually update the balls in-place?
