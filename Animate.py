@@ -18,6 +18,7 @@ class Animate:
         self.system.run(self.num_frames)
         initial_state = self.system.history[0]
         num_balls = len(initial_state.balls)
+        print('\n', end='\r')
 
         # Create plots.
         fig, ax = plt.subplots()
@@ -75,14 +76,14 @@ class Animate:
             fig.canvas.flush_events()
 
             # Print frame number (with carriage return at the end).
-            print(f'frame {frame}', end='\r')
+            print(f'Showing frame {frame}', end='\r')
 
             # Pause so we can control the framerate.
             plt.pause(1 / self.fps)
 
 
 if __name__ == "__main__":
-    print("Test file for Animate.py")
+    print("Running test file for Animate.py")
     balls = np.array([
         Ball(-1, 1, 0.5, -0.5, 0.1),
         # Ball(1, 1, -0.5, -0.5, 0.1),
