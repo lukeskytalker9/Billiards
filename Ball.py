@@ -8,7 +8,7 @@ By: Jack Biggins
 """
 class Ball:
 
-    __frictionContant = 0.05
+    __frictionContant = 0.75
 
     __slots__ = ['pos', 'vel', 'radius', 'isPocketed']
 

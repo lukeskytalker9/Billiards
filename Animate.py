@@ -84,7 +84,7 @@ if __name__ == "__main__":
     print("Test file for Animate.py")
     balls = np.array([
         Ball(-1, 1, 0.5, -0.5, 0.1),
-        Ball(1, 1, -0.5, -0.5, 0.1),
+        # Ball(1, 1, -0.5, -0.5, 0.1),
         Ball(0, 0.5, 0, -0.5, 0.1), 
         Ball(0, 0.25, 0, -0.25, 0.1)
     ])
