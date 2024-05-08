@@ -8,7 +8,7 @@ By: Jack Biggins
 """
 class Ball:
 
-    __frictionContant = 0.15
+    __frictionContant = 0.05
 
     __slots__ = ['pos', 'vel', 'radius', 'isPocketed']
 
@@ -69,11 +69,24 @@ class Ball:
         Vi2n = np.dot(other.vel, normPositionVector)
 
         #With constant velocity velecoties are just switched
+        """
         Vf1t = Vi2t
         Vf1n = Vi2n
 
         Vf2t = Vi1t
+        Vf2n = Vi1n     
+    """
+        
+        #Tangents Remain Unchanged - Think of bouncing off of a wall
+        Vf1t = Vi2t
+        Vf2t = Vi1t
+
+        #Normals are switched - Think of bounign off a wall and the velocity is reversed
+        Vf1n = Vi2n
         Vf2n = Vi1n
+
+
+
 
         self.vel = Vf1t * tangentPosistionVector + Vf1n * normPositionVector
         other.vel = Vf2t * tangentPosistionVector + Vf2n * normPositionVector
@@ -84,9 +97,10 @@ class Ball:
 
 
     def __str__(self) -> str:
-        return f"Ball at {self.pos} with velocity {self.vel} and radius {self.radius} is pocketed: {self.isPocketed}"
+        return f"Ball pos: {self.pos}, vel: {self.vel}, rad: {self.radius}, pocketed: {self.isPocketed}"
 
-
+    def __repr__(self) -> str:
+        return self.__str__()   
 
 
 if __name__ == "__main__":

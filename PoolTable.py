@@ -9,7 +9,23 @@ class PoolTable:
     __slots__ = ['walls', 'pockets']
 
     def __init__(self):
-        self.walls = []
+
+
+        self.walls = [
+            #New wall constructor is Wall(x1 , y1 , angle , length , isPolar = true)
+            Wall(0 , 0 , 0.94615 , 0),
+            Wall(0.94615 , 0 , 1.01799 , -0.07184),
+            #Pocket Here between 1.01799 , -0.07184 AND 1.02607 , 0.00898
+
+            Wall( 1.02607 , 0.00898 , 0.95423 , 0.08082),
+
+
+
+
+
+
+
+        ]
         self.pockets = []
 
         self.setup()

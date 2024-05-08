@@ -12,7 +12,19 @@ class Wall:
 
     __slots__ = ['pos1', 'pos2' , 'tangentVector' , 'normalVector']
 
-    def __init__(self, x1, y1 , x2 , y2):
+
+    def __init__(self, x1, y1 , x2OrAngle , y2OrLength , isPolar = False):
+
+        #If the wall is in polar coordinates then convert to cartesian
+        if (isPolar):
+            x2 = x1 + y2OrLength * np.cos(x2OrAngle)
+            y2 = y1 + y2OrLength * np.sin(x2OrAngle)
+
+        else:
+            x2 = x2OrAngle
+            y2 = y2OrLength
+
+
         self.pos1 = np.array([x1, y1] , dtype=float)
         self.pos2 = np.array([x2, y2] , dtype=float)
 
