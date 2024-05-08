@@ -14,7 +14,8 @@ class System:
         self.y_lims = y_lims
 
         # We don't wany any missing states.
-        assert(self.dT % self.dt == 0, "Big timestep should be divisible by little timestep.")
+        if self.dT % self.dt == 0:
+            raise ValueError("Big timestep should be divisible by little timestep.")
 
     def get_current_state(self):
         return self.history[-1]
@@ -23,10 +24,10 @@ class System:
         """Calculates the given number of subsequent states, which are added to self.history."""
 
         for _ in range(steps):
-            print(f"Step: {len(self.history)}")
+            print(f"Caclulating step {len(self.history)}", end='\r')
+
             # Get next state, and see if there are any balls overlaping (i.e., ball-ball collisions).
             temp_state = self.get_current_state().get_next(self.dT).copy()
-
             overlaps = temp_state.has_overlap()
 
             if len(overlaps) == 0:
@@ -43,11 +44,8 @@ class System:
                     overlaps = temp_state.has_overlap()
                     
                     while len(overlaps) > 0:
-                        print(*overlaps)
-
                         # ... then perform collision procedure until there are no more overlaps.
                         # This loop is needed b/c collision procedure may produce new overlaps since it moves the balls apart.
-                        # ? Will this actually update the balls in-place?
                         for pair in overlaps:
                             pair[0].collision(pair[1])
                         overlaps = temp_state.has_overlap()
