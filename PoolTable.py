@@ -11,50 +11,84 @@ class PoolTable:
 
     def __init__(self):
 
-        table = [
-            {
-                "length": 1.02607,
-                "angle": 0.94615 
-            },
-        ]
-
+    
         self.walls = []
-        currentX = 0
-        currencyY = 0
-        for wall in table:
-            newX = currentX + wall["length"] * np.cos(wall["angle"])
-            newY = currencyY + wall["length"] * np.sin(wall["angle"])
-            self.walls.append(Wall(currentX, currencyY, newX, newY))
-            currentX = newX
-            currencyY = newY
 
-        # self.walls = [
-        #     #New wall constructor is Wall(x1 , y1 , angle , length , isPolar = true)
-        #     Wall(0 , 0 , 0.94615 , 0),
-        #     Wall(0.94615 , 0 , 1.01799 , -0.07184),
-        #     #Pocket Here between 1.01799 , -0.07184 AND 1.02607 , 0.00898
-
-        #     Wall( 1.02607 , 0.00898 , 0.95423 , 0.08082),
-        #     Wall( 0.95423 , 0.08082 , 0.95423 , 1.05237),
-        #     Wall( 0.95423 , 1.05237 , 1.00426 , 1.06119),
-
-        #     #Pocket Here between 1.00426 , 1.06119 AND 1.00426 , 1.17549
-        #     #Wall( 1.00426 , 1.17549 , ),
-
-
-        # ]
 
         self.pockets = []
 
         self.setup()
 
     def setup(self):
-        #Random set of walls like this
-        self.walls.append(Wall(0, 0, 1000, 0))
-        self.walls.append(Wall(0, 0, 1000, 1000))
-        self.walls.append(Wall(0, 0, 0, 1000))
-        self.walls.append(Wall(1000, 0, 1000, 1000))
+
+        table = [
+
+            {
+                "length": 0.94615,
+                "angle": 0 
+            },
+            {
+                "length": 0.1016,
+                "angle": -np.pi/4
+            },
+            #Pocket 1 Here Instead of this
+            {
+                "length": 0.1143,
+                "angle": np.pi/4
+            },
+            ##########
+            {
+                "length": 0.1016,
+                "angle": np.pi*(3/4)
+            },
+            {
+                "length": 0.97155,
+                "angle": np.pi/2
+            },
+            {
+                "length": 0.0508,
+                "angle": 0.174533 #10 degrees
+            },
+            #Pocket 2 Here Instead of this
+            {
+                "length": 0.1143,
+                "angle": np.pi/2 #10 degrees
+            },
+            ####
+            {
+                "length": 0.0508,
+                "angle": np.pi - 0.174533
+            },
+            {
+                "length": 0.97155,
+                "angle": np.pi/2
+            },
+            {
+                "length": 0.1016,
+                "angle": np.pi/4
+            },
+            #Pocket 3 Here Instead of this
+            {
+                "length": 0.1143,
+                "angle": np.pi*(3/4)
+            },
+            ###########
+    
+
+        ]
         
-        self.pockets.append(Pocket(0, 0, 2))
+        currentX = 0
+        currencyY = 0
+        for i in range(2):
+            for wall in table:
+
+                if i == 1:
+                    wall["angle"] = wall["angle"] + np.pi/2
+                newX = currentX + wall["length"] * np.cos(wall["angle"])
+                newY = currencyY + wall["length"] * np.sin(wall["angle"])
+                self.walls.append(Wall(currentX, currencyY, newX, newY))
+                currentX = newX
+                currencyY = newY
+
 
        
