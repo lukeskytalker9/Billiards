@@ -96,5 +96,8 @@ class PoolTable:
                 currentX = newX
                 currencyY = newY
 
+    def __str__(self):
+        return f"<PoolTable || Walls: {len(self.walls)}>"
+
 
        

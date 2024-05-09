@@ -53,7 +53,7 @@ class Animate:
 
         # Walls
         lines = []
-        for wall in system.walls:
+        for wall in system.history[0].walls:
             lines.append(ax.add_line(lineyboy.Line2D([wall.pos1[0], wall.pos2[0]], [wall.pos1[1], wall.pos2[1]])))
 
         # Iterate over every state in the system's history.

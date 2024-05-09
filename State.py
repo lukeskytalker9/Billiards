@@ -6,8 +6,9 @@ import matplotlib as mpl
 from copy import deepcopy
 
 class State:
-    def __init__(self, balls=None) -> None:
+    def __init__(self, balls=None , walls = None) -> None:
         self.balls = np.array(balls)
+        self.walls = np.array(walls)
 
 
     def copy(self) -> State:
@@ -18,7 +19,7 @@ class State:
         """Returns the next state after this one (i.e., the state after one timestep)."""
 
         # Copy the current state.
-        next = State(balls=self.balls.copy())
+        next = State(balls=self.balls.copy() , walls=self.walls)
 
         # Update the balls in next state (unless they're pocketed).
         for ball in next.balls:
@@ -43,6 +44,14 @@ class State:
                             # ...then add that pair to the list of overlaps, but only if it's not already in there.
                             if not any([ball in o and other in o for o in overlaps]):
                                 overlaps.append([ball, other])
+
+            for wall in self.walls:
+                if not ball.isPocketed:
+                    if wall.isOverlapping(ball):
+
+                        overlaps.append([wall, ball])
+
+
 
         return overlaps
 

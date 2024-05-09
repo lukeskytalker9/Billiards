@@ -109,7 +109,7 @@ class Wall:
 
 
 
-if __name__ == "__main__":
+if __name__ == "__!main__":
 
     print("Beginning the test file for Wall.py")
 
