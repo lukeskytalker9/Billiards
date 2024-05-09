@@ -114,7 +114,7 @@ if __name__ == "__main__":
     #     # Ball(0, 0.5, 0, -0.5, 0.1),
     #     # Ball(0, 0.25, 0, -0.25, 0.1)
     # ])
-    balls = triangle(1, 0, 0, radius=0.05)
+    balls = triangle(2, 0, 0, radius=0.05)
     # balls = [Ball(0, 0, 0, 0, 0.1)]
     balls.append(Ball(0, -1, 0, 0.5, 0.05))
 

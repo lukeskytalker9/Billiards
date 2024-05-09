@@ -51,7 +51,7 @@ class Ball:
         d = self.radius + other.radius - np.linalg.norm(other.pos - self.pos)
 
         normPositionVector = (other.pos - self.pos) / np.linalg.norm(other.pos - self.pos)
-
+        """
         vel_sum = np.abs(self.vel) + np.abs(other.vel)
         # print(f"vel_sum = {vel_sum}", end='\r')
 
@@ -72,7 +72,7 @@ class Ball:
 
         self.pos = self.pos - update_length_self * normPositionVector
         other.pos = other.pos + update_length_other * normPositionVector
-
+        """
         # Update velocities of the balls
 
 
@@ -99,17 +99,17 @@ class Ball:
 
         # ! Method 3: Jack's method
         # #Update positions here
-        # velSum = np.abs(Vi1n) + np.abs(Vi2n)
-        # if velSum == 0:
-        #     raise(ValueError, "Both balls have zero velocity, yet they are colliding!")
-        # selfFrac = Vi1n / velSum
-        # otherFrac = Vi2n / velSum
+        velSum = np.abs(Vi1n) + np.abs(Vi2n)
+        if velSum == 0:
+            raise(ValueError, "Both balls have zero velocity, yet they are colliding!")
+        selfFrac = Vi1n / velSum
+        otherFrac = Vi2n / velSum
 
-        # update_length_self = normPositionVector * d * selfFrac
-        # update_length_other = normPositionVector * d * otherFrac
+        update_length_self = normPositionVector * d * selfFrac
+        update_length_other = normPositionVector * d * otherFrac
 
-        # self.pos = self.pos - update_length_self
-        # other.pos = other.pos + update_length_other
+        self.pos = self.pos - update_length_self
+        other.pos = other.pos + update_length_other
 
 
         # ! Method 4: Will
@@ -145,7 +145,7 @@ class Ball:
     def __repr__(self) -> str:
         return self.__str__()
 
-    def good_collision(self: Ball, other: Ball, method: int=1) -> None:
+    def good_collision(self: Ball, other: Ball, method: int=0) -> None:
         """Rewriting the collision function because it got super cluttered."""
 
         # The distance between the centers of the two balls.
@@ -160,18 +160,38 @@ class Ball:
         # A unit vector which is orthogonal to norm_dist_vec
         ortho_norm_vec = np.array([-norm_dist_vec[1], norm_dist_vec[0]]) / norm(np.array([-norm_dist_vec[1], norm_dist_vec[0]]))
 
-        # * First, update the positions using the given method.
+        # The initial components of self.vel and other.vel which are in the direction of norm_dist_vec and ortho_dist_vec.
+        init_self_ortho_vel = np.dot(self.vel, ortho_norm_vec)
+        init_self_norm_vel = np.dot(self.vel, norm_dist_vec)
+        init_other_ortho_vel = np.dot(other.vel, ortho_norm_vec)
+        init_other_norm_vel = np.dot(other.vel, norm_dist_vec)
 
+        # * First, update the positions using the given method.
         if method == 0:
             # Move only the fastest one
             if norm(self.vel) > norm(other.vel):
-                self.vel = self.vel - norm_dist_vec * dist_overlapping
+                self.pos = self.pos - norm_dist_vec * dist_overlapping
             else:
                 other.pos = other.pos + norm_dist_vec * dist_overlapping
         elif method == 1:
             # move both by half
             self.pos = self.pos - norm_dist_vec * dist_overlapping / 2
             other.pos = other.pos + norm_dist_vec * dist_overlapping / 2
+
+        elif method == 2:
+            #This is the method where it updates depengin on the fraction
+            
+            velSum = np.abs(init_self_norm_vel) + np.abs(init_other_norm_vel)
+            if velSum == 0:
+                raise(ValueError, "Both balls have zero velocity, yet they are colliding!")
+            selfFrac = init_self_norm_vel / velSum
+            otherFrac = init_other_norm_vel / velSum
+
+            update_length_self = norm_dist_vec * dist_overlapping * selfFrac
+            update_length_other = norm_dist_vec * dist_overlapping * otherFrac
+
+            self.pos = self.pos - update_length_self
+            other.pos = other.pos + update_length_other
         else:
             if int(method) != method:
                 raise TypeError("Method should be an int.")
@@ -181,11 +201,7 @@ class Ball:
 
         # * Now, update the velocities.
 
-        # The initial components of self.vel and other.vel which are in the direction of norm_dist_vec and ortho_dist_vec.
-        init_self_ortho_vel = np.dot(self.vel, ortho_norm_vec)
-        init_self_norm_vel = np.dot(self.vel, norm_dist_vec)
-        init_other_ortho_vel = np.dot(other.vel, ortho_norm_vec)
-        init_other_norm_vel = np.dot(other.vel, norm_dist_vec)
+
 
         # Apperently, orthogonal components are unchanged and the normal components switch.
         final_self_ortho_vel = init_self_ortho_vel
