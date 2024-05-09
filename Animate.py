@@ -124,8 +124,8 @@ if __name__ == "__main__":
     # balls = [Ball(0, 0, 0, 0, 0.1)]
     balls.append(Ball(0, -1, 0, 0.5, 0.05))
 
-
-    system = System(initial_state=State(np.array(balls)), walls=None)
+    poolTable = PoolTable()  
+    system = System(initial_state=State(np.array(balls) , walls = poolTable.walls))
     # system.history[0].plot()
     # system.run(105)
     # print(max([np.linalg.norm(ball.vel) for ball in system.get_current_state().balls]))
