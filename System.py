@@ -4,8 +4,8 @@ from Ball import Ball
 from Wall import Wall
 
 class System:
-    dT = 0.01       # Size of big timestep.
-    dt = 0.00001    # Size of little timestep.
+    dT = 0.0001       # Size of big timestep.
+    dt = 0.0000001    # Size of little timestep.
     mu = 0.05       # Bascially the coefficient of friction.
 
     def __init__(self, initial_state: State, x_lims=[-1, 1], y_lims=[-1, 1]) -> None:
@@ -43,22 +43,30 @@ class System:
 
                     # If there are any overlaps now...
                     overlaps = temp_state.has_overlap()
+                    tempCounter = 0
 
                     while len(overlaps) > 0:
-                        print("MAKE THE PRINTING STOP!!!!!!!!!!!!!!!!!!!!!!!!")
                         print(f"collision at step {T}_{t}")
+                        print(f"len(overlaps): {len(overlaps)}")
+                        print(f"overlaps: {overlaps}")
                         # ... then perform collision procedure until there are no more overlaps.
                         # This loop is needed b/c collision procedure may produce new overlaps since it moves the balls apart.
-                        for pair in overlaps:
+                        for pair in overlaps:   
 
                             #If it is a ball wall collision
+                            print("Pairs" , pair)
                             if type(pair[0]) == Wall :
+                                print("Ball Wall Collision")
                                 pair[0].collision(pair[1])
                                 continue
+                            
 
-
-                            pair[0].good_collision(pair[1])
+                            pair[0].bestCollision(pair[1])
+                            
                         overlaps = temp_state.has_overlap()
+                        tempCounter += 1
+                        if tempCounter > 100:
+                            break
 
                 self.history.append(temp_state)
 

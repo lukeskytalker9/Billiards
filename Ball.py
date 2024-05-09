@@ -40,6 +40,57 @@ class Ball:
         self.isPocketed = True
 
 
+    def bestCollision(self, other:Ball):
+        d = self.radius + other.radius - np.linalg.norm(other.pos - self.pos)
+
+        normPositionVector = (other.pos - self.pos) / np.linalg.norm(other.pos - self.pos)
+
+        tangentPosistionVector = np.array([-normPositionVector[1], normPositionVector[0]])
+        tangentPosistionVector = tangentPosistionVector / np.linalg.norm(tangentPosistionVector)
+
+        Vi1t = np.dot(self.vel, tangentPosistionVector)
+        Vi1n = np.dot(self.vel, normPositionVector)
+
+        Vi2t = np.dot(other.vel, tangentPosistionVector)
+        Vi2n = np.dot(other.vel, normPositionVector)
+
+
+        velSum = np.abs(Vi1n) + np.abs(Vi2n)
+
+        if velSum == 0:
+            raise(ValueError, "Both balls have zero velocity, yet they are colliding!")
+        selfFrac = Vi1n / velSum
+        otherFrac = Vi2n / velSum
+
+        print(f"selfFrac = {selfFrac}, otherFrac = {otherFrac}")
+        print("normPositionVector = ", normPositionVector)
+        print("d = ", d)
+
+        update_length_self = normPositionVector * d * selfFrac
+        update_length_other = normPositionVector * d * otherFrac
+
+        print(f"update_length_self = {update_length_self}, update_length_other = {update_length_other}")
+
+        #Switch back
+        self.pos = self.pos - update_length_self
+        other.pos = other.pos + update_length_other
+        print(f"self.pos = {self.pos}, other.pos = {other.pos}")
+
+        #Tangents Remain Unchanged - Think of bouncing off of a wall
+        Vf1t = Vi1t
+        Vf2t = Vi2t
+
+        #Normals are switched - Think of bounign off a wall and the velocity is reversed
+        Vf1n = Vi2n
+        Vf2n = Vi1n
+
+        self.vel = Vf1t * tangentPosistionVector + Vf1n * normPositionVector
+        other.vel = Vf2t * tangentPosistionVector + Vf2n * normPositionVector
+
+
+
+
+
     """
     Here is the code to deal with collisions between balls.
 
@@ -140,12 +191,12 @@ class Ball:
         other.vel = Vf2t * tangentPosistionVector + Vf2n * normPositionVector
 
     def __str__(self) -> str:
-        return f"Ball pos: {self.pos}, vel: {self.vel}, rad: {self.radius}, pocketed: {self.isPocketed}"
+        return f"{self.pos}, {self.vel},"
 
     def __repr__(self) -> str:
         return self.__str__()
 
-    def good_collision(self: Ball, other: Ball, method: int=0) -> None:
+    def good_collision(self: Ball, other: Ball, method: int=2) -> None:
         """Rewriting the collision function because it got super cluttered."""
 
         # The distance between the centers of the two balls.

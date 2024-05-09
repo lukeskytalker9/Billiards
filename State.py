@@ -48,6 +48,7 @@ class State:
             for wall in self.walls:
                 if not ball.isPocketed:
                     if wall.isOverlapping(ball):
+                        print("Wall Overlap ****************************************************")
 
                         overlaps.append([wall, ball])
 

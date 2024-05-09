@@ -69,7 +69,7 @@ class Wall:
             then return true if the distance from the wall is less than the radius of the ball
         """
         sum = pos1ToBallTangentUnit + pos2ToBallTangentUnit
-        print(sum)
+        #print(sum)
         if (sum[0] == 0. and sum[1] == 0.):
             #print("Now checking if the ball is touching the wall")
             return self.__getDistanceFromWall(ball) < ball.radius
