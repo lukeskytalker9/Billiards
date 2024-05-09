@@ -17,14 +17,13 @@ class System:
         if self.dT % self.dt == 0:
             raise ValueError("Big timestep should be divisible by little timestep.")
 
-
     def get_current_state(self):
         return self.history[-1]
 
     def run(self, steps: int) -> None:
         """Calculates the given number of subsequent states, which are added to self.history."""
 
-        for _ in range(steps):
+        for T in range(steps):
             print(f"Caclulating step {len(self.history)}", end='\r')
 
             # Get next state, and see if there are any balls overlaping (i.e., ball-ball collisions).
@@ -37,18 +36,20 @@ class System:
                 continue
             else:
                 # If collision detected next frame, transition to using little timesteps until the collision happens.
-                for _ in range(int(self.dT / self.dt)):
+                print(f"collision at step {T}_0")
+                for t in range(int(self.dT / self.dt)):
                     # First calculate new next frame w/ small timestep.
                     temp_state = self.get_current_state().get_next(self.dt)
 
                     # If there are any overlaps now...
                     overlaps = temp_state.has_overlap()
-                    
+
                     while len(overlaps) > 0:
+                        print(f"collision at step {T}_{t}")
                         # ... then perform collision procedure until there are no more overlaps.
                         # This loop is needed b/c collision procedure may produce new overlaps since it moves the balls apart.
                         for pair in overlaps:
-                            pair[0].collision(pair[1])
+                            pair[0].good_collision(pair[1])
                         overlaps = temp_state.has_overlap()
 
                 self.history.append(temp_state)

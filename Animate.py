@@ -28,7 +28,7 @@ class Animate:
 
         # Set plot aspect ratio to 1:1 and turn off axis ticks.
         plt.gca().set_aspect('equal')
-        ax.axis("off")
+        # ax.axis("off")
 
         # Set the x, y ranges of the plot.
         ax.set_xlim(system.x_lims)
@@ -67,7 +67,7 @@ class Animate:
                     pos = state.balls[i].pos
                     vel = state.balls[i].vel * arrow_scale
                     arrow.set_data(x=pos[0], y=pos[1], dx=vel[0], dy=vel[1])
-                
+
                     for arrow in arrows:
                         ax.draw_artist(arrow)
 
@@ -77,22 +77,57 @@ class Animate:
 
             # Print frame number (with carriage return at the end).
             print(f'Showing frame {frame}', end='\r')
-            print(f'Showing frame {frame}', end='\r')
 
             # Pause so we can control the framerate.
             plt.pause(1 / self.fps)
 
 
+def triangle(rows, x, y, radius=0.1) -> list[Ball]:
+    """Puts the placement of a """
+    ret = []
+    for r in range(1, rows+1):
+        num_radii = 2 * (r - 1)
+        num_balls = r
+        ball_x = 1.1 * np.linspace(-radius * num_radii / 2, radius * num_radii / 2, num_balls) + x
+        ball_y = 2 * radius * num_balls + y
+
+        for i in range(num_balls):
+            ret.append(Ball(ball_x[i], ball_y, 0, 0, radius))
+
+    return ret
+
 if __name__ == "__main__":
     print("Running test file for Animate.py")
 
-    balls = np.array([
-        Ball(-1, 1, 0.5, -0.5, 0.1),
-        # Ball(1, 1, -0.5, -0.5, 0.1),
-        Ball(0, 0.5, 0, -0.5, 0.1), 
-        Ball(0, 0.25, 0, -0.25, 0.1)
-    ])
-    
+    # balls = np.array([
+    #     # Ball(-1, 1, 0.5, -0.5, 0.1),
+    #     # Ball(1, 1, -0.5, -0.5, 0.1),
+    #     # Ball(0, 0.5, 0, -0.5, 0.1),
+    #     # Ball(0, 0.25, 0, -0.25, 0.1)
+
+
+
+    #     # Ball(0, 1, 0, -0.7, 0.1),
+    #     # # Ball(0, 0, 0, 0, 0.1),
+    #     # Ball(0, 0.2, 0, 0, 0.1),
+    #     # Ball(0, 0.5, 0, 0, 0.1),
+    #     # Ball(0, 0.5, 0, -0.5, 0.1),
+    #     # Ball(0, 0.25, 0, -0.25, 0.1)
+    # ])
+    balls = triangle(1, 0, 0, radius=0.05)
+    # balls = [Ball(0, 0, 0, 0, 0.1)]
+    balls.append(Ball(0, -1, 0, 0.5, 0.05))
+
+
     system = System(initial_state=State(np.array(balls)), walls=None)
-    Animate(system=system, num_frames=300, fps=60).calc_then_show(True)
+    # system.history[0].plot()
+    # system.run(105)
+    # print(max([np.linalg.norm(ball.vel) for ball in system.get_current_state().balls]))
+    # system.get_current_state().plot()
+
+    Animate(system=system, num_frames=500, fps=60).calc_then_show(True)
     print("Test finished.")
+
+
+
+
