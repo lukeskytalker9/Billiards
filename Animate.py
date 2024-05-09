@@ -1,8 +1,10 @@
 from System import System
 from State import State
 import matplotlib.pyplot as plt
+import matplotlib.lines as lineyboy
 from Ball import Ball
 import numpy as np
+from PoolTable import PoolTable
 
 class Animate:
 
@@ -49,6 +51,11 @@ class Animate:
         ax.draw_artist(ln)
         fig.canvas.blit(fig.bbox)
 
+        # Walls
+        lines = []
+        for wall in system.walls:
+            lines.append(ax.add_line(lineyboy.Line2D([wall.pos1[0], wall.pos2[0]], [wall.pos1[1], wall.pos2[1]])))
+
         # Iterate over every state in the system's history.
         for frame, state in enumerate(self.system.history):
 
@@ -61,6 +68,10 @@ class Animate:
             # Redraw balls.
             scatscale = (ax.get_window_extent().width / (system.x_lims[1] - system.x_lims[0] + 1) * 72 / fig.dpi) ** 2
             ax.draw_artist(ln)
+
+            for line in lines:
+                ax.draw_artist(line)
+
             ln.set_sizes([scatscale * ball.radius / 2 for ball in initial_state.balls])
 
             # Update the arrows to reflect the balls' new positions and velocities and redraw them.
@@ -118,10 +129,10 @@ if __name__ == "__main__":
     # ])
     balls = triangle(2, 0, 0, radius=0.05)
     # balls = [Ball(0, 0, 0, 0, 0.1)]
-    balls.append(Ball(0, -1, 0, 0.5, 0.05))
+    balls.append(Ball(0, -1, 0, 10, 0.05))
 
 
-    system = System(initial_state=State(np.array(balls)), walls=None)
+    system = System(initial_state=State(np.array(balls)), walls=PoolTable().walls, x_lims=[-1, 2], y_lims=[-0.5, 3])
     # system.history[0].plot()
     # system.run(105)
     # print(max([np.linalg.norm(ball.vel) for ball in system.get_current_state().balls]))
