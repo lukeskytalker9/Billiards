@@ -59,7 +59,9 @@ class Animate:
             ln.set_offsets([ball.pos for ball in state.balls])
 
             # Redraw balls.
+            scatscale = (ax.get_window_extent().width / (system.x_lims[1] - system.x_lims[0] + 1) * 72 / fig.dpi) ** 2
             ax.draw_artist(ln)
+            ln.set_sizes([scatscale * ball.radius / 2 for ball in initial_state.balls])
 
             # Update the arrows to reflect the balls' new positions and velocities and redraw them.
             if show_arrows:
