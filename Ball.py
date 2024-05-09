@@ -59,8 +59,8 @@ class Ball:
 
         if velSum == 0:
             raise(ValueError, "Both balls have zero velocity, yet they are colliding!")
-        selfFrac = Vi1n / velSum
-        otherFrac = Vi2n / velSum
+        selfFrac = np.abs(Vi1n) / velSum
+        otherFrac = np.abs(Vi2n) / velSum
 
         print(f"selfFrac = {selfFrac}, otherFrac = {otherFrac}")
         print("normPositionVector = ", normPositionVector)

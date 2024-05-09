@@ -62,7 +62,7 @@ class System:
                             
 
                             pair[0].bestCollision(pair[1])
-                            
+
                         overlaps = temp_state.has_overlap()
                         tempCounter += 1
                         if tempCounter > 100:

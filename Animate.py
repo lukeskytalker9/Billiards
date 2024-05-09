@@ -123,7 +123,9 @@ if __name__ == "__main__":
     balls = triangle(3, 0.47308, 1.3843, radius=0.0254)
     #balls = [Ball(0.47308, 1 , 0, -1, 0.0254)]
     # balls = [Ball(0, 0, 0, 0, 0.1)]
-    balls.append(Ball(0.47308, 0.3048 , 0, 5, 0.0254))
+    #balls.append(Ball(0.47308, 0.3048 , 0, 5, 0.0254))
+    balls.append(Ball(0.47308, 0.3048 , 10, 5, 0.0254))
+
 
     poolTable = PoolTable()  
     system = System(initial_state=State(np.array(balls) , walls = poolTable.walls) , x_lims=[-0.5, 1.5], y_lims=[-0.5, 2.5])
