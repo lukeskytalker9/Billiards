@@ -121,9 +121,15 @@ if __name__ == "__main__":
     # ])
 
     balls = triangle(2, 0, 0, radius=0.05)
-    balls.append(Ball(0, 0.2, 0, 2, 0.05))
+    # balls = [Ball(0, 0, 0, 0, 0.1)]
+    balls.append(Ball(0, -1, 0, 0.5, 0.05))
 
-    system = System(initial_state=State(np.array(balls)), walls=PoolTable().walls, x_lims=[-1, 2], y_lims=[-0.5, 3])
+
+    system = System(initial_state=State(np.array(balls)), walls=None)
+    # system.history[0].plot()
+    # system.run(105)
+    # print(max([np.linalg.norm(ball.vel) for ball in system.get_current_state().balls]))
+    # system.get_current_state().plot()
 
     Animate(system=system, num_frames=500, fps=60).calc_then_show(True)
     print("Test finished.")
