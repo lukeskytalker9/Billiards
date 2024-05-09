@@ -201,8 +201,6 @@ class Ball:
 
         # * Now, update the velocities.
 
-
-
         # Apperently, orthogonal components are unchanged and the normal components switch.
         final_self_ortho_vel = init_self_ortho_vel
         final_other_ortho_vel = init_other_ortho_vel

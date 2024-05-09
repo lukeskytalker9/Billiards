@@ -73,6 +73,12 @@ class PoolTable:
                 "angle": np.pi*(3/4)
             },
             ###########
+            {
+                "length": 0.1016,
+                "angle": np.pi*(5/4)
+            },
+            
+
     
 
         ]
@@ -83,7 +89,7 @@ class PoolTable:
             for wall in table:
 
                 if i == 1:
-                    wall["angle"] = wall["angle"] + np.pi/2
+                    wall["angle"] = wall["angle"] + np.pi
                 newX = currentX + wall["length"] * np.cos(wall["angle"])
                 newY = currencyY + wall["length"] * np.sin(wall["angle"])
                 self.walls.append(Wall(currentX, currencyY, newX, newY))
