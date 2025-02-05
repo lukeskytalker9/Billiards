@@ -134,7 +134,7 @@ if __name__ == "__main__":
     # print(max([np.linalg.norm(ball.vel) for ball in system.get_current_state().balls]))
     # system.get_current_state().plot()
 
-    Animate(system=system, num_frames=3000, fps=60).calc_then_show(True)
+    Animate(system=system, num_frames=3000, fps=120).calc_then_show(True)
     print("Test finished.") 
 
 
